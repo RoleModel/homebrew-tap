@@ -1,8 +1,7 @@
 # Cask for RoleModel's fork of OpenScreen.
 #
-# Separate from `openscreen.rb`, which installs upstream's release. This one
-# installs github.com/RoleModel/openscreen, which differs in ways the toolkit
-# depends on:
+# Installs github.com/RoleModel/openscreen, which differs from upstream's release
+# in ways the toolkit depends on:
 #
 #   - `openscreen open <project.openscreen>` opens a document in the editor.
 #     Upstream has no way in at all: its bundle declares no document type, so
@@ -53,12 +52,13 @@ cask "rolemodel-openscreen" do
 
   auto_updates false
 
-  # Same bundle name as upstream, so both casks would fight over
-  # /Applications/Openscreen.app. Homebrew's own error for that is about a
-  # pre-existing app rather than about two casks, so say it here instead.
-  # Names a cask, not a file. Upstream publishes no cask of its own (checked
-  # 2026-08-23) and this tap no longer carries one, so in practice this guards
-  # against a third-party tap claiming the name — which is exactly how the
+  # Same bundle name as upstream, so two casks would fight over
+  # /Applications/Openscreen.app, and Homebrew's own error for that talks about a
+  # pre-existing app rather than about two casks.
+  #
+  # This names a cask, not a file. Upstream publishes none of its own (checked
+  # 2026-08-23) and this tap no longer carries one, so what it really guards
+  # against is a third-party tap claiming the name — which is exactly how the
   # siddharthvaddem/openscreen mixup happened.
   conflicts_with cask: "openscreen"
 
