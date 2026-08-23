@@ -14,7 +14,10 @@
 #   - The compositor build finds cargo without assuming rustup's layout, which is
 #     what stopped a Homebrew Rust from building it.
 #
-# The two casks install the same app name and cannot coexist; see conflicts_with.
+# Upstream's build installs the same app name and cannot coexist with this one;
+# see conflicts_with. This tap used to carry a cask for that build too, "for
+# comparison" — nothing installed it, nothing depended on it, and a second cask
+# for somebody else's binary is a thing to explain rather than a thing to have.
 #
 # GENERATED FIELDS: `version` and both `sha256` values come from a release, and
 # are written by `scripts/update-cask.mjs`. Do not hand-edit them — run
@@ -53,6 +56,10 @@ cask "rolemodel-openscreen" do
   # Same bundle name as upstream, so both casks would fight over
   # /Applications/Openscreen.app. Homebrew's own error for that is about a
   # pre-existing app rather than about two casks, so say it here instead.
+  # Names a cask, not a file. Upstream publishes no cask of its own (checked
+  # 2026-08-23) and this tap no longer carries one, so in practice this guards
+  # against a third-party tap claiming the name — which is exactly how the
+  # siddharthvaddem/openscreen mixup happened.
   conflicts_with cask: "openscreen"
 
   app "Openscreen.app"
