@@ -70,6 +70,11 @@ cask "rolemodel-openscreen" do
   # siddharthvaddem/openscreen mixup happened.
   conflicts_with cask: "openscreen"
 
+  # The artifact declares :monterey as its floor and the cask declared no floor
+  # at all, which `brew audit --cask --online` fails on — and on an older Mac
+  # meant brew happily installed an app that could not launch.
+  depends_on macos: ">= :monterey"
+
   app "Openscreen.app"
 
   # No `binary` stanza, on purpose.
