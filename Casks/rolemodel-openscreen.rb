@@ -39,18 +39,17 @@ cask "rolemodel-openscreen" do
   arch arm: "Apple-Silicon", intel: "Intel"
 
   version "0.0.1"
-  sha256 arm: "76d41df494e7b04bce33271278be239426e67d60c93c80716d87672ab5fae4ff",
+  sha256 arm:   "76d41df494e7b04bce33271278be239426e67d60c93c80716d87672ab5fae4ff",
          intel: "797d7541d25c4510c4b6301de41f43415a279af1415d583f481cbcb733886075"
 
   url "https://github.com/RoleModel/openscreen/releases/download/v#{version}/Openscreen-macOS-#{arch}-#{version}.dmg",
       verified: "github.com/RoleModel/openscreen/"
-
   # Two `name` stanzas, because the app answers to two things: what it calls itself
   # (CFBundleDisplayName, which is what the Dock and the menu bar show) and what it
   # is a build of, which is how anyone who has heard of it will search.
   name "RoleModel Studio"
   name "OpenScreen (RoleModel build)"
-  desc "Screen recorder and editor for product demos, with the RoleModel pipeline's CLI additions"
+  desc "Screen recorder and editor for product demos, with the RoleModel CLI pipeline"
   homepage "https://github.com/RoleModel/openscreen"
 
   livecheck do
@@ -59,7 +58,6 @@ cask "rolemodel-openscreen" do
   end
 
   auto_updates false
-
   # Same bundle name as upstream, so two casks would fight over
   # /Applications/Openscreen.app, and Homebrew's own error for that talks about a
   # pre-existing app rather than about two casks.
@@ -69,11 +67,10 @@ cask "rolemodel-openscreen" do
   # against is a third-party tap claiming the name — which is exactly how the
   # siddharthvaddem/openscreen mixup happened.
   conflicts_with cask: "openscreen"
-
   # The artifact declares :monterey as its floor and the cask declared no floor
   # at all, which `brew audit --cask --online` fails on — and on an older Mac
   # meant brew happily installed an app that could not launch.
-  depends_on macos: ">= :monterey"
+  depends_on macos: :monterey
 
   app "Openscreen.app"
 
@@ -111,8 +108,8 @@ cask "rolemodel-openscreen" do
 
     opoo "This build is ad-hoc signed, not notarized: clearing its quarantine flag so macOS will open it."
     system_command "/usr/bin/xattr",
-                   args: ["-dr", "com.apple.quarantine", app_path],
-                   sudo: false,
+                   args:         ["-dr", "com.apple.quarantine", app_path],
+                   sudo:         false,
                    print_stderr: false
   end
 
@@ -139,8 +136,8 @@ cask "rolemodel-openscreen" do
   # predates the change.
   zap trash: [
     "~/Library/Application Support/Openscreen",
-    "~/Library/Application Support/RoleModel Studio",
     "~/Library/Application Support/openscreen",
+    "~/Library/Application Support/RoleModel Studio",
     "~/Library/Logs/Openscreen",
     "~/Library/Logs/RoleModel Studio",
     "~/Library/Preferences/com.etiennelescot.openscreen.plist",
