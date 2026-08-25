@@ -116,6 +116,39 @@ cask "rolemodel-openscreen" do
                    print_stderr: false
   end
 
+  # Both names, because the app was renamed and the paths follow the name rather than
+  # the bundle. Electron derives `app.getPath("userData")` and the log directory from
+  # `app.name`, which on macOS is CFBundleDisplayName — so a copy installed after the
+  # rename writes to "RoleModel Studio" and one installed before it wrote to
+  # "Openscreen". A zap that lists only the current name leaves the older directory
+  # behind on exactly the machines that have been running this the longest.
+  #
+  # Both bundle ids, because it changed at 0.0.1.
+  #
+  # It used to be com.etiennelescot.openscreen — upstream's — which meant this
+  # installed as upstream's app and the two could not coexist. rolemodel.studio makes
+  # it a separate app.
+  #
+  # The cost is a real one and the caveats above say it out loud: macOS keys the
+  # Screen Recording grant to the bundle id, so a machine that had already granted it
+  # to the old id has to grant it again to the new one. There is no way to carry a
+  # TCC grant across identities, and the alternative was shipping for ever under
+  # someone else's identifier.
+  #
+  # The old paths stay listed so `brew zap` still cleans up after a build that
+  # predates the change.
+  zap trash: [
+    "~/Library/Application Support/Openscreen",
+    "~/Library/Application Support/RoleModel Studio",
+    "~/Library/Application Support/openscreen",
+    "~/Library/Logs/Openscreen",
+    "~/Library/Logs/RoleModel Studio",
+    "~/Library/Preferences/com.etiennelescot.openscreen.plist",
+    "~/Library/Preferences/rolemodel.studio.plist",
+    "~/Library/Saved Application State/com.etiennelescot.openscreen.savedState",
+    "~/Library/Saved Application State/rolemodel.studio.savedState",
+  ]
+
   caveats do
     <<~EOS
       `openscreen` is put on PATH by the rm-video formula, not by this cask:
@@ -144,37 +177,4 @@ cask "rolemodel-openscreen" do
       first launch macOS will need you to approve it under Privacy & Security.
     EOS
   end
-
-  # Both names, because the app was renamed and the paths follow the name rather than
-  # the bundle. Electron derives `app.getPath("userData")` and the log directory from
-  # `app.name`, which on macOS is CFBundleDisplayName — so a copy installed after the
-  # rename writes to "RoleModel Studio" and one installed before it wrote to
-  # "Openscreen". A zap that lists only the current name leaves the older directory
-  # behind on exactly the machines that have been running this the longest.
-  #
-  # Both bundle ids, because it changed at 0.0.1.
-  #
-  # It used to be com.etiennelescot.openscreen — upstream's — which meant this
-  # installed as upstream's app and the two could not coexist. rolemodel.studio makes
-  # it a separate app.
-  #
-  # The cost is a real one and the caveats above say it out loud: macOS keys the
-  # Screen Recording grant to the bundle id, so a machine that had already granted it
-  # to the old id has to grant it again to the new one. There is no way to carry a
-  # TCC grant across identities, and the alternative was shipping for ever under
-  # someone else's identifier.
-  #
-  # The old paths stay listed so `brew zap` still cleans up after a build that
-  # predates the change.
-  zap trash: [
-    "~/Library/Application Support/RoleModel Studio",
-    "~/Library/Application Support/Openscreen",
-    "~/Library/Application Support/openscreen",
-    "~/Library/Preferences/rolemodel.studio.plist",
-    "~/Library/Preferences/com.etiennelescot.openscreen.plist",
-    "~/Library/Saved Application State/rolemodel.studio.savedState",
-    "~/Library/Saved Application State/com.etiennelescot.openscreen.savedState",
-    "~/Library/Logs/RoleModel Studio",
-    "~/Library/Logs/Openscreen",
-  ]
 end
