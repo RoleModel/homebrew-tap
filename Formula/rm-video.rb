@@ -8,8 +8,8 @@
 class RmVideo < Formula
   desc "RoleModel brand layer for OpenScreen — presets, wallpapers, and demo tooling"
   homepage "https://github.com/RoleModel/rolemodel-openscreen"
-  url "https://github.com/RoleModel/rolemodel-openscreen/releases/download/v0.1.94/rolemodel-openscreen-v0.1.94.tar.gz"
-  sha256 "cb55bb95b1ddb60457d110b9e8728fe745e40124f974bc513acad6a3afae1c26"
+  url "https://github.com/RoleModel/rolemodel-openscreen/releases/download/v0.1.95/rolemodel-openscreen-v0.1.95.tar.gz"
+  sha256 "c8b513619842a210840186b6ef42418e4bc74561e284029d94d4abc11fa8602f"
   license "MIT"
 
   # Node is the only system runtime dependency. The scripted-demo commands need
@@ -28,7 +28,7 @@ class RmVideo < Formula
   # neither, so `install.sh` — whose last step hands off to it — died at the
   # finish line on a clean machine, and `rm-share` was in the bin map but not
   # here, so brew shipped six of eight commands while the docs promised seven.
-  ENTRIES = %w[rm-video rm-studio rm-transcribe rm-voice rm-mux rm-library rm-demo rm-share rm-setup rm-compose rm-cut rm-insert rm-align-audio rm-render-alignment rm-render-hyperframes rm-render-pip rm-adopt rm-resync rm-retime-pip rm-reconcile rm-visual-beats rm-fal].freeze
+  ENTRIES = %w[rm-video rm-studio rm-transcribe rm-voice rm-mux rm-export-cut rm-library rm-demo rm-share rm-setup rm-compose rm-cut rm-insert rm-align-audio rm-render-alignment rm-render-hyperframes rm-render-pip rm-adopt rm-resync rm-retime-pip rm-reconcile rm-visual-beats rm-fal].freeze
 
   def install
     # `--trust-lockfile`: pnpm 11 verifies every lockfile entry against its
