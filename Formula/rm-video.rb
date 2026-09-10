@@ -18,6 +18,14 @@ class RmVideo < Formula
   depends_on "node"
   depends_on "pnpm" => :build
 
+  # Print PDFs only. librsvg turns a sticker into a PDF whose paths are still
+  # paths; Ghostscript is the only thing that changes such a PDF's colour to
+  # CMYK without flattening it to pixels. Recommended rather than required:
+  # everything else in the toolkit works without either, and the Studio names
+  # whichever is missing when somebody presses Print PDF.
+  depends_on "ghostscript" => :recommended
+  depends_on "librsvg" => :recommended
+
   # Every CLI in the toolkit, not just one.
   #
   # `rm-video` was the only entry point linked, which meant `rm-studio` — the
@@ -43,12 +51,27 @@ class RmVideo < Formula
     # so the whole thing goes to libexec and only the entry points are linked.
     libexec.install Dir["*"]
 
+    # Symlinks, not `write_env_script`.
+    #
+    # The wrapper was a two-line bash script that exec'd the .mjs — no
+    # environment to set, so it added nothing a symlink does not do. What it
+    # took away was the ability to hand the entry point to node, and the
+    # desktop app does exactly that: it finds `rm-studio` on PATH and runs
+    # `node <that path>`. Against a bash wrapper node answered
+    #
+    #   SyntaxError: Unexpected string
+    #
+    # pointing at the `exec` line, which reads as the toolkit being broken
+    # rather than as the app having been handed a shell script.
+    #
+    # A symlink satisfies both callers: brew rewrites the .mjs shebang to an
+    # absolute node, so running it from a shell needs nothing on PATH, and
+    # `node <symlink>` is just node opening a JavaScript file.
     ENTRIES.each do |entry|
       script = libexec/"bin/#{entry}.mjs"
       next unless script.exist?
 
-      (bin/entry).write_env_script script, {}
-      chmod 0755, bin/entry
+      bin.install_symlink script => entry
     end
 
     # `openscreen` on PATH comes from here, not from the cask.
