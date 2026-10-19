@@ -1,6 +1,8 @@
 # rolemodel/homebrew-tap
 
-Homebrew tap for the RoleModel video pipeline.
+Homebrew tap for RoleModel tools.
+
+## Video pipeline
 
 ```sh
 brew install rolemodel/tap/rm-video                    # the toolkit: eight commands
@@ -14,16 +16,16 @@ thing, including the parts Homebrew cannot:
 curl -fsSL https://raw.githubusercontent.com/RoleModel/rolemodel-openscreen/main/install.sh | sh
 ```
 
-## This repository is a build output
+### These files are a build output
 
-**Do not edit these files here.** They live in
+**Do not edit the video pipeline files here.** They live in
 [`packaging/`](https://github.com/RoleModel/rolemodel-openscreen/tree/main/packaging)
 in the toolkit repo, and `npm run sync-tap` there copies them across. `npm run
 check` fails if the two drift.
 
 This repo exists only because Homebrew resolves `brew tap rolemodel/tap` to a
 repository named `homebrew-tap` and nothing else. That naming rule is the entire
-reason it is separate — it is not a place to work.
+reason it is separate.
 
 | file | is |
 |---|---|
@@ -31,7 +33,7 @@ reason it is separate — it is not a place to work.
 | `Casks/rolemodel-openscreen.rb` | our fork of the app |
 | `scripts/update-cask.mjs` | points a cask at a release, with checksums from the real installers |
 
-## Cutting a release
+### Cutting a release
 
 ```sh
 node scripts/update-cask.mjs rolemodel-openscreen v1.9.6-rm.2
@@ -42,3 +44,19 @@ checksums. Hand-editing them is how a tap ends up installing last month's build 
 upstream ships an `update-homebrew-cask.yml` that has never been configured
 (their issue #335), and the job it guards has been skipping green on every
 release since. The failure is silent, which is the problem.
+
+## git-wt
+
+```sh
+brew install rolemodel/tap/git-wt
+```
+
+Typed, provisioned git worktrees for Rails apps. Source:
+[OutlawAndy/git-wt](https://github.com/OutlawAndy/git-wt).
+
+`Formula/git-wt.rb` is maintained by hand. To release, tag the source repo,
+then set `url` to the new tag's tarball and `sha256` to:
+
+```sh
+curl -fsSL https://github.com/OutlawAndy/git-wt/archive/refs/tags/<tag>.tar.gz | shasum -a 256
+```
