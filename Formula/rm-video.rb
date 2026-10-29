@@ -8,8 +8,8 @@
 class RmVideo < Formula
   desc "RoleModel brand layer for OpenScreen — presets, wallpapers, and demo tooling"
   homepage "https://github.com/RoleModel/rolemodel-openscreen"
-  url "https://github.com/RoleModel/rolemodel-openscreen/releases/download/v0.1.228/rolemodel-openscreen-v0.1.228.tar.gz"
-  sha256 "dcff54a02f6e1660ef86c749634d3c272f4475c3c4cd4d7dfbf9e01d1720e3bc"
+  url "https://github.com/RoleModel/rolemodel-openscreen/releases/download/v0.1.230/rolemodel-openscreen-v0.1.230.tar.gz"
+  sha256 "ec61f3e8e3436483bb9e91cf4c5567d5b1407fafd4133b5ddcf2dfe71168d160"
   license "MIT"
 
   # Node is the only system runtime dependency. The scripted-demo commands need
